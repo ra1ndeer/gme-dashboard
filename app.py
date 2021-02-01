@@ -195,150 +195,146 @@ layout = go.Layout(
 
 
 
-def main():
 
-    df = pd.read_csv("daily_data.csv", 
-                     index_col=0)
-    df["index"] = df.index
-    # dropping the last day collected (Jan 30) because it was 2AM of Jan 30 
-    # when I ran the web scrapper so it isn't a full day of data
-    df = df.drop(df.index[-1]) 
-    
-    app = dash.Dash(__name__, 
-                    external_stylesheets=external_stylesheets)
-    server = app.server
+df = pd.read_csv("daily_data.csv", 
+                    index_col=0)
+df["index"] = df.index
+# dropping the last day collected (Jan 30) because it was 2AM of Jan 30 
+# when I ran the web scrapper so it isn't a full day of data
+df = df.drop(df.index[-1]) 
 
-    app.layout = html.Div(children=[
+app = dash.Dash(__name__, 
+                external_stylesheets=external_stylesheets)
+server = app.server
+
+app.layout = html.Div(children=[
+    html.Div([
+        html.H1("r/wallstreetbets vs. Wall Street", 
+                className="row", 
+                style={"font-family": "Helvetica", 
+                        'backgroundColor': colors["header"], 
+                        'color': colors['header_text'], 
+                        "margin": 0, 
+                        "padding-left": 10, 
+                        "padding-top": 10, 
+                        "padding-right": 10, 
+                        "padding-bottom": 5}),
+        html.P("A sentiment analysis of r/wallstreetbets posts pertaining GME (GameStop) using VADER", 
+                style={"font-family": "Helvetica", 
+                        'backgroundColor': colors["header"], 
+                        'color': colors['header_text'], 
+                        "margin": 0, 
+                        "padding-left": 10, 
+                        "padding-top": 5, 
+                        "padding-right": 10, 
+                        "padding-bottom": 10})
+        ]),
         html.Div([
-            html.H1("r/wallstreetbets vs. Wall Street", 
-                    className="row", 
-                    style={"font-family": "Helvetica", 
-                           'backgroundColor': colors["header"], 
-                           'color': colors['header_text'], 
-                           "margin": 0, 
-                           "padding-left": 10, 
-                           "padding-top": 10, 
-                           "padding-right": 10, 
-                           "padding-bottom": 5}),
-            html.P("A sentiment analysis of r/wallstreetbets posts pertaining GME (GameStop) using VADER", 
-                   style={"font-family": "Helvetica", 
-                          'backgroundColor': colors["header"], 
-                          'color': colors['header_text'], 
-                          "margin": 0, 
-                          "padding-left": 10, 
-                          "padding-top": 5, 
-                          "padding-right": 10, 
-                          "padding-bottom": 10})
-            ]),
+            html.Div([
+                    dcc.Graph(id="gme_stock", 
+                                config={'doubleClick': 'autosize'})
+                ], className="eight columns", 
+                    style={"margin-left": 10, 
+                            "margin-right": 0, 
+                            "margin-top": 20, 
+                            "margin-bottom": 20}), 
             html.Div([
                 html.Div([
-                        dcc.Graph(id="gme_stock", 
-                                  config={'doubleClick': 'autosize'})
-                    ], className="eight columns", 
-                        style={"margin-left": 10, 
-                               "margin-right": 0, 
-                               "margin-top": 20, 
-                               "margin-bottom": 20}), 
-                html.Div([
-                    html.Div([
-                        dcc.Graph(id="sentiment_title", 
-                                  config={'doubleClick': 'autosize'})
-                        ], className="row", 
-                            style={"margin-left": 10, 
-                                   "margin-right": 20, 
-                                   "margin-top": 20, 
-                                   "margin_bottom": 10, 
-                                   "display": "flex", 
-                                   "flex-direction": "row"}),
-                    html.Div([
-                        dcc.Graph(id="sentiment_body", 
-                                  config={'doubleClick': 'autosize'})
-                        ], className="row", 
-                            style={"margin-left": 10, 
-                                   "margin-right": 20, 
-                                   "margin-top": 10, 
-                                   "margin_bottom": 10, 
-                                   "display": "flex", 
-                                   "flex-direction": "row"}),
-                    html.Div([
-                        dcc.Graph(id="count", 
-                                  config={'doubleClick': 'autosize'})
+                    dcc.Graph(id="sentiment_title", 
+                                config={'doubleClick': 'autosize'})
                     ], className="row", 
                         style={"margin-left": 10, 
-                               "margin-right": 20, 
-                               "margin-top": 10, 
-                               "margin_bottom": 20, 
-                               "display": "flex", 
-                               "flex-direction": "row"}),
-                    ], className="four columns")
-            ], style={"display": "flex", 
-                      "flex-direction": "row"}),
-            html.Div([
-                html.P(children=["Author: Luís Franco | Contact: luisbap1999@gmail.com | Github repository: ", 
-                                 dcc.Link("link", 
-                                          href="https://github.com/", 
-                                          target="_blank", 
-                                          style={"font-family": "Helvetica", 
-                                                 "color": colors["url"]}),
-                                 " | LinkedIn: ",
-                                 dcc.Link("link", 
-                                          href="https://www.linkedin.com/in/ra1ndeer/", 
-                                          target="_blank", 
-                                          style={"font-family": "Helvetica", 
-                                                 "color": colors["url"]})], 
-                                          style={"font-family": "Helvetica", 
-                                                 'backgroundColor': colors["header"], 
-                                                 'color': colors['header_text'], 
-                                                 "margin": 0, 
-                                                 "padding": 10})
-                ])
-        ], style={'backgroundColor': colors['background']})
-                    
+                                "margin-right": 20, 
+                                "margin-top": 20, 
+                                "margin_bottom": 10, 
+                                "display": "flex", 
+                                "flex-direction": "row"}),
+                html.Div([
+                    dcc.Graph(id="sentiment_body", 
+                                config={'doubleClick': 'autosize'})
+                    ], className="row", 
+                        style={"margin-left": 10, 
+                                "margin-right": 20, 
+                                "margin-top": 10, 
+                                "margin_bottom": 10, 
+                                "display": "flex", 
+                                "flex-direction": "row"}),
+                html.Div([
+                    dcc.Graph(id="count", 
+                                config={'doubleClick': 'autosize'})
+                ], className="row", 
+                    style={"margin-left": 10, 
+                            "margin-right": 20, 
+                            "margin-top": 10, 
+                            "margin_bottom": 20, 
+                            "display": "flex", 
+                            "flex-direction": "row"}),
+                ], className="four columns")
+        ], style={"display": "flex", 
+                    "flex-direction": "row"}),
+        html.Div([
+            html.P(children=["Author: Luís Franco | Contact: luisbap1999@gmail.com | Github repository: ", 
+                                dcc.Link("link", 
+                                        href="https://github.com/", 
+                                        target="_blank", 
+                                        style={"font-family": "Helvetica", 
+                                                "color": colors["url"]}),
+                                " | LinkedIn: ",
+                                dcc.Link("link", 
+                                        href="https://www.linkedin.com/in/ra1ndeer/", 
+                                        target="_blank", 
+                                        style={"font-family": "Helvetica", 
+                                                "color": colors["url"]})], 
+                                        style={"font-family": "Helvetica", 
+                                                'backgroundColor': colors["header"], 
+                                                'color': colors['header_text'], 
+                                                "margin": 0, 
+                                                "padding": 10})
+            ])
+    ], style={'backgroundColor': colors['background']})
+                
+
+# the one and only callback which was horribly hard to 
+# do because of severe lack of documentation
+@app.callback([Output("gme_stock", "figure"), 
+                Output('sentiment_title', 'figure'), 
+                Output('sentiment_body', 'figure'), 
+                Output('count', 'figure')],
+                [Input("gme_stock", "relayoutData"),
+                Input("sentiment_title", "relayoutData"),
+                Input("sentiment_body", "relayoutData"),
+                Input("count", "relayoutData")])
+def zoom_event(relayout_data0, relayout_data1, relayout_data2, relayout_data3):
+    my_figures = [get_gme_plot(df), get_title_sentiment_plot(df), get_body_sentiment_plot(df), get_posts_plot(df)]
+
+    # hacky solution for the fact that Dash doesn't allow the
+    # same Output object to be used for more than one callback
+    global relay_status
+    current_master = 0
+
+    if relayout_data0 != relay_status[0]:
+        relay_status[0] = relayout_data0
+        current_master =  0
+    if relayout_data1 != relay_status[1]:
+        relay_status[1] = relayout_data1
+        current_master = 1
+    if relayout_data2 != relay_status[2]:
+        relay_status[2] = relayout_data2
+        current_master = 2
+    if relayout_data3 != relay_status[3]:
+        relay_status[3] = relayout_data3
+        current_master = 3
     
-    # the one and only callback which was horribly hard to 
-    # do because of severe lack of documentation
-    @app.callback([Output("gme_stock", "figure"), 
-                   Output('sentiment_title', 'figure'), 
-                   Output('sentiment_body', 'figure'), 
-                   Output('count', 'figure')],
-                   [Input("gme_stock", "relayoutData"),
-                   Input("sentiment_title", "relayoutData"),
-                   Input("sentiment_body", "relayoutData"),
-                   Input("count", "relayoutData")])
-    def zoom_event(relayout_data0, relayout_data1, relayout_data2, relayout_data3):
-        my_figures = [get_gme_plot(df), get_title_sentiment_plot(df), get_body_sentiment_plot(df), get_posts_plot(df)]
-
-        # hacky solution for the fact that Dash doesn't allow the
-        # same Output object to be used for more than one callback
-        global relay_status
-        current_master = 0
-
-        if relayout_data0 != relay_status[0]:
-            relay_status[0] = relayout_data0
-            current_master =  0
-        if relayout_data1 != relay_status[1]:
-            relay_status[1] = relayout_data1
-            current_master = 1
-        if relayout_data2 != relay_status[2]:
-            relay_status[2] = relayout_data2
-            current_master = 2
-        if relayout_data3 != relay_status[3]:
-            relay_status[3] = relayout_data3
-            current_master = 3
-        
-        # if one zooms, they all zoom
-        for fig in my_figures:
-            try:
-                fig.update_xaxes(range=[relay_status[current_master]["xaxis.range[0]"], relay_status[current_master]["xaxis.range[1]"]])
-            except (KeyError, TypeError):
-                fig['layout']["xaxis"]["autorange"] = True
+    # if one zooms, they all zoom
+    for fig in my_figures:
+        try:
+            fig.update_xaxes(range=[relay_status[current_master]["xaxis.range[0]"], relay_status[current_master]["xaxis.range[1]"]])
+        except (KeyError, TypeError):
+            fig['layout']["xaxis"]["autorange"] = True
 
 
-        return my_figures
-    
-    app.run_server(debug=False)
-
+    return my_figures
 
 
 if __name__ == "__main__":
-    main()
+    app.run_server(debug=False)
