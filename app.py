@@ -46,7 +46,7 @@ def get_gme_plot(df):
                        "yanchor": "top", 
                        "x": 0.5, 
                        "y": 0.99}
-    fig_yahoo.update_layout(height=809, 
+    fig_yahoo.update_layout(height=729, 
                             width=1155, 
                             legend={"x": 0, 
                                     "y":1}, 
@@ -82,7 +82,7 @@ def get_body_sentiment_plot(df):
                       "yanchor": "top", 
                       "x": 0.5, 
                       "y": 0.97}
-    fig_body.update_layout(height=263, 
+    fig_body.update_layout(height=233, 
                            legend={"x": 0, 
                                    "y": 1}, 
                            title=fig_body_title)
@@ -119,7 +119,7 @@ def get_title_sentiment_plot(df):
                        "yanchor": "top", 
                        "x": 0.5, 
                        "y": 0.97}
-    fig_title.update_layout(height=263, 
+    fig_title.update_layout(height=233, 
                             legend={"x": 0, 
                                     "y":1}, 
                             title=fig_title_title)
@@ -152,7 +152,7 @@ def get_posts_plot(df):
                        "yanchor": "top", 
                        "x": 0.5, 
                        "y": 0.97}
-    fig_posts.update_layout(height=263, 
+    fig_posts.update_layout(height=233, 
                             title=fig_posts_title)
     return fig_posts
 
@@ -219,7 +219,12 @@ app.layout = html.Div(children=[
                         "padding-top": 10, 
                         "padding-right": 10, 
                         "padding-bottom": 5}),
-        html.P("A sentiment analysis of r/wallstreetbets posts pertaining GME (GameStop) using VADER", 
+        html.P(children=["A sentiment analysis of r/wallstreetbets posts pertaining GME (GameStop) using VADER: ", 
+                    dcc.Link("paper link", 
+                             href="https://www.researchgate.net/publication/275828927_VADER_A_Parsimonious_Rule-based_Model_for_Sentiment_Analysis_of_Social_Media_Text", 
+                             target="_blank", 
+                             style={"font-family": "Helvetica", 
+                                    "color": colors["url"]})],
                 style={"font-family": "Helvetica", 
                         'backgroundColor': colors["header"], 
                         'color': colors['header_text'], 
