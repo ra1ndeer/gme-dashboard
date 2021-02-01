@@ -1,0 +1,4 @@
+gme
+*.pyc
+.DS_Store
+.env
