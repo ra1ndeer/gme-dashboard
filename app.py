@@ -280,7 +280,7 @@ app.layout = html.Div(children=[
         html.Div([
             html.P(children=["Author: Luís Franco | Contact: luisbap1999@gmail.com | Github repository: ", 
                                 dcc.Link("link", 
-                                        href="https://github.com/", 
+                                        href="https://github.com/ra1ndeer/gme-dashboard", 
                                         target="_blank", 
                                         style={"font-family": "Helvetica", 
                                                 "color": colors["url"]}),
